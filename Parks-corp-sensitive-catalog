@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parks Corporation™</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
+            padding: 20px;
+        }
+        #login, #main, #replacement-screen {
+            display: none;
+        }
+        #login, #replacement-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        #file-buttons {
+            margin-top: 20px;
+        }
+        input, button {
+            border: 1px solid white;
+            padding: 10px;
+            margin: 5px;
+            font-family: "Courier New", Courier, monospace;
+        }
+        input {
+            background-color: white;
+            color: black;
+            width: 300px;
+            text-align: center;
+        }
+        button {
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+        .file-button {
+            margin: 10px auto;
+            display: block;
+            width: 300px;
+            text-align: center;
+        }
+        /* Static Noise Screen */
+        #replacement-screen {
+            width: 100%;
+            height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/7/7e/Static-noise.gif') no-repeat center center fixed;
+            background-size: cover;
+        }
+        #replacement-screen h1 {
+            font-family: "VCR OSD Mono", monospace;
+            color: white;
+            font-size: 24px;
+            text-shadow: 0px 0px 10px white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login">
+        <h1>Parks Corporation™</h1>
+        <p>Please enter the password to continue:</p>
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="validatePassword()">Submit</button>
+        <p id="error" style="color: red; display: none;">Access Denied.</p>
+    </div>
+
+    <!-- Main Catalog Screen -->
+    <div id="main">
+        <h1>Parks Corp. Sensitive Information Files</h1>
+        <div id="file-buttons">
+            <!-- Buttons will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Replacement Initiative Screen -->
+    <div id="replacement-screen">
+        <h1>All “Employees” have been successfully replaced with “NewBeings”</h1>
+    </div>
+
+    <script>
+        const PASSWORD = "yewwif";
+        const FILES = [
+            { name: "Your Sensitive Email Chains", url: "https://drive.google.com/file/d/1Qma1vGMyuS2g0-MApj8iPbuxd6UmYJQf/view?usp=sharing" },
+            { name: "Phase Two Timeline", url: "https://drive.google.com/file/d/1d_VX0PLzN5k-UfDK7VOxX1CIXr15Z8g2/view?usp=sharing" },
+            { name: "Work Hazards", url: "https://drive.google.com/file/d/15IDM4q-U58Oq1o4n7qta_uLZqfRKlBfB/view?usp=drive_link" },
+            { name: "Finance Payroll", url: "https://drive.google.com/file/d/1UA4k69PvUVhZ7SZt_mm52-FOwBaq7fun/view?usp=sharing" },
+            { name: "Replacement Initiative", action: "replacement" }, // Action for the static noise screen
+            { name: "Phase Two Summary", url: "https://drive.google.com/file/d/17VCOURMSl3bs2tWqG25toDuvKpzIEQA2/view?usp=sharing" }
+        ];
+
+        document.getElementById('login').style.display = 'block';
+
+        function validatePassword() {
+            const input = document.getElementById('password').value;
+            if (input === PASSWORD) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('main').style.display = 'block';
+                loadFiles();
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        function loadFiles() {
+            const fileButtons = document.getElementById('file-buttons');
+            FILES.forEach(file => {
+                const button = document.createElement('button');
+                button.className = 'file-button';
+                button.textContent = file.name;
+
+                if (file.action === "replacement") {
+                    // Special case: Navigate to replacement screen
+                    button.onclick = () => {
+                        document.getElementById('main').style.display = 'none';
+                        document.getElementById('replacement-screen').style.display = 'block';
+                    };
+                } else {
+                    // Default case: Open URL
+                    button.onclick = () => {
+                        window.open(file.url, '_blank');
+                    };
+                }
+
+                fileButtons.appendChild(button);
+            });
+        }
+    </script>
+</body>
+</html>
